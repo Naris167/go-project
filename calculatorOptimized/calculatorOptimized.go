@@ -19,12 +19,20 @@ func main() {
 		fmt.Println(" Type '0' to exit the application")
 		fmt.Print(" Your option: ")
 		/*
-		This line is commented out to avoid the error of
-		"unexpected newline in argument list". The error is
-		caused by the fact that the fmt.Scan function does not
-		handle the newline character properly.
-		It is better to use the bufio package to
-		read input from the user.
+		This line is commented out to avoid the error of "unexpected newline in argument list".
+		The error is caused by the fact that the fmt.Scan function does not handle
+		the newline character properly. It is better to use the bufio package to read input from the user.
+
+		1. `fmt.Scan(&input)` reads input from the standard input buffer until (not include) it encounters whitespace.
+		2. It then leaves any subsequent characters in the buffer, including the newline character
+		   if the user pressed Enter immediately after their input.
+		3. `bufio.NewReader(os.Stdin).ReadString('\n')` reads data from the buffer up to
+		   and including the specified delimiter, which in this case is the newline character (\n).
+		4. If the first character in the buffer is a newline character (left over from a previous
+		   input operation like `fmt.Scan`), `ReadString` will read just that newline character,
+		   resulting in an empty string as the input (since the delimiter is removed from the returned string).
+		5. The empty string is then passed to `strconv.ParseFloat`, which fails to parse it as a float,
+		   leading to an error.
 		*/
 		// fmt.Scan(&input) 
 
